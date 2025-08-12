@@ -27,7 +27,7 @@ function TotalSales() {
   const { syncOrders, isSyncing } = useSyncOrders();
   const { user } = useUser();
 
-  const [allSales, setAllSales] = useState<OnlineSale[]>();
+  const [allSales, setAllSales] = useState<OnlineSale[]>([]);
 
   const [option, setOption] = useState<DateFilterOption>(1);
   const [customDateRange, setCustomDateRange] = useState<{
@@ -109,6 +109,10 @@ function TotalSales() {
   // }, [gettingTotalSales, totalSales]);
 
   useEffect(() => {
+    if (gettingTotalSales || !activeShop?.id || !user?.name) {
+      console.log("⏳ Skipping useEffect - waiting for data");
+      return;
+    }
     async function getData() {
       try {
         console.log("📊 Starting getData with:", {
@@ -191,7 +195,7 @@ function TotalSales() {
     }
 
     getData();
-  }, [gettingTotalSales, totalSales]);
+  }, [gettingTotalSales, totalSales, activeShop?.id, user?.name]);
 
   if (gettingTotalSales || isSyncing) {
     return <LoaderPage />;
@@ -330,9 +334,9 @@ function TotalSales() {
       .orderBy(["date"], ["desc"])
       .value();
 
-    console.log("✅ Successfully processed orders:", {
-      count: groupedOrders.length,
-      sample: groupedOrders[0],
+    console.log("🎯 Final data for components:", {
+      groupedOrdersCount: groupedOrders.length,
+      allSalesForContainer: allSales?.length,
     });
   } catch (error) {
     console.error("Error processing sales data:", error);
