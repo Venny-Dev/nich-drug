@@ -215,98 +215,98 @@ function TotalSales() {
   try {
     groupedOrders = _.chain(allSales || [])
       .filter((sale) => {
-        // const saleDate = new Date(sale.date);
-        // if (isNaN(saleDate.getTime())) {
-        //   console.warn("Invalid date:", sale.date);
-        //   return false; // or handle appropriately
-        // }
+        const saleDate = new Date(sale.date);
+        if (isNaN(saleDate.getTime())) {
+          console.warn("Invalid date:", sale.date);
+          return false; // or handle appropriately
+        }
 
-        // // Date filtering
+        // Date filtering
 
-        // if (option === "custom") {
-        //   if (!customDateRange.from || !customDateRange.to) return true;
+        if (option === "custom") {
+          if (!customDateRange.from || !customDateRange.to) return true;
 
-        //   const fromDate = new Date(customDateRange.from);
-        //   const toDate = new Date(customDateRange.to);
+          const fromDate = new Date(customDateRange.from);
+          const toDate = new Date(customDateRange.to);
 
-        //   // Normalize dates to compare just the date part (ignore time)
-        //   const isSameDay = fromDate.toDateString() === toDate.toDateString();
-        //   if (isSameDay) {
-        //     // If same day, check if sale date matches that specific day
-        //     const saleDateString = saleDate.toDateString();
-        //     const targetDateString = fromDate.toDateString();
+          // Normalize dates to compare just the date part (ignore time)
+          const isSameDay = fromDate.toDateString() === toDate.toDateString();
+          if (isSameDay) {
+            // If same day, check if sale date matches that specific day
+            const saleDateString = saleDate.toDateString();
+            const targetDateString = fromDate.toDateString();
 
-        //     if (saleDateString !== targetDateString) return false;
-        //   } else {
-        //     // If different dates, use range filtering
-        //     // Set time boundaries for more accurate filtering
-        //     const fromDateStart = new Date(fromDate);
-        //     fromDateStart.setHours(0, 0, 0, 0); // Start of from date
+            if (saleDateString !== targetDateString) return false;
+          } else {
+            // If different dates, use range filtering
+            // Set time boundaries for more accurate filtering
+            const fromDateStart = new Date(fromDate);
+            fromDateStart.setHours(0, 0, 0, 0); // Start of from date
 
-        //     const toDateEnd = new Date(toDate);
-        //     toDateEnd.setHours(23, 59, 59, 999); // End of to date
+            const toDateEnd = new Date(toDate);
+            toDateEnd.setHours(23, 59, 59, 999); // End of to date
 
-        //     if (saleDate < fromDateStart || saleDate > toDateEnd) return false;
-        //   }
-        // } else if (typeof option === "number") {
-        //   if (option === 2) {
-        //     // For option 2 - filter for yesterday only
-        //     const today = new Date();
-        //     const yesterday = new Date(today);
-        //     yesterday.setDate(today.getDate() - 1);
+            if (saleDate < fromDateStart || saleDate > toDateEnd) return false;
+          }
+        } else if (typeof option === "number") {
+          if (option === 2) {
+            // For option 2 - filter for yesterday only
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
 
-        //     // Set time boundaries for yesterday
-        //     const startOfYesterday = new Date(yesterday);
-        //     startOfYesterday.setHours(0, 0, 0, 0);
+            // Set time boundaries for yesterday
+            const startOfYesterday = new Date(yesterday);
+            startOfYesterday.setHours(0, 0, 0, 0);
 
-        //     const endOfYesterday = new Date(yesterday);
-        //     endOfYesterday.setHours(23, 59, 59, 999);
+            const endOfYesterday = new Date(yesterday);
+            endOfYesterday.setHours(23, 59, 59, 999);
 
-        //     // Check if sale date falls within yesterday only
-        //     if (saleDate < startOfYesterday || saleDate > endOfYesterday) {
-        //       return false;
-        //     }
-        //   } else if (option !== 60) {
-        //     // For options 1, 7, 30 - filter by days ago
-        //     const cutoffDate = new Date();
-        //     // console.log("running");
-        //     cutoffDate.setDate(cutoffDate.getDate() - option);
-        //     if (saleDate < cutoffDate) return false;
-        //   } else if (option === 60) {
-        //     const today = new Date();
-        //     // For option 60 - filter by previous calendar month
-        //     const lastMonth = new Date(
-        //       today.getFullYear(),
-        //       today.getMonth() - 1,
-        //       1
-        //     );
-        //     const lastDayOfLastMonth = new Date(
-        //       today.getFullYear(),
-        //       today.getMonth(),
-        //       0
-        //     );
+            // Check if sale date falls within yesterday only
+            if (saleDate < startOfYesterday || saleDate > endOfYesterday) {
+              return false;
+            }
+          } else if (option !== 60) {
+            // For options 1, 7, 30 - filter by days ago
+            const cutoffDate = new Date();
+            // console.log("running");
+            cutoffDate.setDate(cutoffDate.getDate() - option);
+            if (saleDate < cutoffDate) return false;
+          } else if (option === 60) {
+            const today = new Date();
+            // For option 60 - filter by previous calendar month
+            const lastMonth = new Date(
+              today.getFullYear(),
+              today.getMonth() - 1,
+              1
+            );
+            const lastDayOfLastMonth = new Date(
+              today.getFullYear(),
+              today.getMonth(),
+              0
+            );
 
-        //     // Check if sale date falls within the previous month
-        //     if (saleDate < lastMonth || saleDate > lastDayOfLastMonth) {
-        //       return false;
-        //     }
-        //   }
-        // }
+            // Check if sale date falls within the previous month
+            if (saleDate < lastMonth || saleDate > lastDayOfLastMonth) {
+              return false;
+            }
+          }
+        }
 
-        // // Payment method filtering
-        // if (paymentMethod !== "all") {
-        //   const salePaymentType = sale.payment_type.toLowerCase();
-        //   if (salePaymentType !== paymentMethod) return false;
-        // }
+        // Payment method filtering
+        if (paymentMethod !== "all") {
+          const salePaymentType = sale.payment_type.toLowerCase();
+          if (salePaymentType !== paymentMethod) return false;
+        }
 
-        // // Cashier filtering
-        // if (user.role == "cashier" && sale.cashier_name !== user.name)
-        //   return false;
+        // Cashier filtering
+        if (user.role == "cashier" && sale.cashier_name !== user.name)
+          return false;
 
-        // if (selectedCashier !== "all") {
-        //   if (sale.cashier_name !== selectedCashier) return false;
-        // }
-        console.log("🧪 Test: Accepting all sales", sale);
+        if (selectedCashier !== "all") {
+          if (sale.cashier_name !== selectedCashier) return false;
+        }
+        // console.log("🧪 Test: Accepting all sales", sale);
         return true;
       })
       .groupBy("order_id")
