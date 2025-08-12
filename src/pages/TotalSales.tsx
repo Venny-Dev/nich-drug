@@ -140,9 +140,9 @@ function TotalSales() {
               console.log("✅ Sync successful, deleting cached orders");
               await indexedDBManager.deleteShopOrders(activeShop?.id || "");
             },
-            onError: (error: any) => {
-              console.error("❌ Sync failed:", error);
-            },
+            // onError: (error: any) => {
+            //   console.error("❌ Sync failed:", error);
+            // },
           });
         }
 
@@ -196,6 +196,12 @@ function TotalSales() {
 
     getData();
   }, [gettingTotalSales, totalSales, activeShop?.id, user?.name]);
+
+  useEffect(() => {
+    if (totalSales && totalSales.length > 0) {
+      setAllSales(totalSales);
+    }
+  }, [totalSales]);
 
   if (gettingTotalSales || isSyncing) {
     return <LoaderPage />;

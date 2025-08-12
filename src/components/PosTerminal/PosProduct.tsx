@@ -1,3 +1,4 @@
+import { Package } from "lucide-react";
 import { usePosTerminalContext } from "../../contexts/PosTerminalContext";
 import { formatCurrency } from "../../utils/helpers";
 
@@ -8,7 +9,7 @@ function PosProduct({ product }: any) {
     <div className="rounded-[24px] bg-white py-6 px-3 lg:flex lg:items-center lg:justify-between lg:border lg:border-gray-200 lg:shadow-sm">
       <div className="flex items-center  lg:gap-[30px] gap-5">
         <div>
-          <img src="/product-img.png" className="size-[60px]" alt="" />
+          <Package className="size-[30px] " color="#37589F99" />
         </div>
         <div>
           <p>{product.name}</p>
