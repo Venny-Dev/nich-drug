@@ -78,7 +78,7 @@ export default defineConfig({
             "tailwind-merge",
             "class-variance-authority",
             "js-cookie",
-            "lodash-es",
+            "lodash",
           ],
         },
       },

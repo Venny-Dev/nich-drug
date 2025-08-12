@@ -15,9 +15,10 @@ import {
 import type { DateFilterOption, OnlineSale } from "../utils/types";
 import { useSyncOrders } from "../customHooks/useOrders";
 // import _ from "lodash";
-import { chain } from "lodash-es";
+// import { chain } from "lodash-es";
 import { useUser } from "../customHooks/useUser";
 import { dateFilterOptions } from "../utils/data";
+import _ from "lodash";
 
 // type DateOption = string | number;
 
@@ -197,12 +198,6 @@ function TotalSales() {
     getData();
   }, [gettingTotalSales, totalSales, activeShop?.id, user?.name]);
 
-  // useEffect(() => {
-  //   if (totalSales && totalSales.length > 0) {
-  //     setAllSales(totalSales);
-  //   }
-  // }, [totalSales]);
-
   if (gettingTotalSales || isSyncing) {
     return <LoaderPage />;
   }
@@ -218,7 +213,7 @@ function TotalSales() {
 
   let groupedOrders: any[] = [];
   try {
-    groupedOrders = chain(allSales || [])
+    groupedOrders = _.chain(allSales || [])
       .filter((sale) => {
         // const saleDate = new Date(sale.date);
         // if (isNaN(saleDate.getTime())) {
