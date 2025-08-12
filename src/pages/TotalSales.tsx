@@ -197,11 +197,11 @@ function TotalSales() {
     getData();
   }, [gettingTotalSales, totalSales, activeShop?.id, user?.name]);
 
-  useEffect(() => {
-    if (totalSales && totalSales.length > 0) {
-      setAllSales(totalSales);
-    }
-  }, [totalSales]);
+  // useEffect(() => {
+  //   if (totalSales && totalSales.length > 0) {
+  //     setAllSales(totalSales);
+  //   }
+  // }, [totalSales]);
 
   if (gettingTotalSales || isSyncing) {
     return <LoaderPage />;
@@ -218,7 +218,7 @@ function TotalSales() {
 
   let groupedOrders: any[] = [];
   try {
-    groupedOrders = chain(allSales)
+    groupedOrders = chain(allSales || [])
       .filter((sale) => {
         // const saleDate = new Date(sale.date);
         // if (isNaN(saleDate.getTime())) {
